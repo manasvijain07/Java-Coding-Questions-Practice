@@ -1,7 +1,7 @@
 
 // find Largest Contiguous Sum Subarray from an array and also return the indexes - TC- O(n)
 
-public class LargestContiguousSumSubarray {
+public class LargestContiguousSumSubArray {
 	
 	public int findContiguousSum(int [] a)
 	{
@@ -50,7 +50,7 @@ public class LargestContiguousSumSubarray {
 		// TODO Auto-generated method stub
 		int[] a = {-3, -4, 4, -1, -2, 1, 5, -3};
 		
-		LargestContiguousSumSubarray l = new LargestContiguousSumSubarray();
+		LargestContiguousSumSubArray l = new LargestContiguousSumSubArray();
 		System.out.println(l.findContiguousSum(a));
 		
 		l.findContiguousSumWithIndexes(a);

@@ -1,99 +1,95 @@
 
 public class ArrayOperations {
-	
 	int count = 0;
 	
-	public void add(int[] a, int val)
+	public void insertAtEnd(int[] a, int val)
 	{
-
-		a[count++] = val;
-		
+		if(count < a.length)
+		{
+			a[count++] = val;
+		}
+		else
+		{
+			System.out.println("Array is full");
+		}
 	}
 	
 	public void print(int[] a)
 	{
-		System.out.println("Printing array elements - ");
-		for(int i = 0; i < count; i++)
+		for(int i : a)
 		{
-			System.out.print(a[i] + " ");
+			System.out.print(i + " ");
 		}
-		System.out.print("\n");
+		System.out.println("\nCount is : "+ count);
 	}
 	
-	public void insertAtIndex(int[]a, int val, int pos)
+	public void insertAtIndex(int[] a, int val, int index)
 	{
-		for(int i = count-1; i > pos; i--)
+		int i = a.length-1;
+		
+		while(i > index)
 		{
 			a[i] = a[i-1];
+			i--;
 		}
-		a[pos] = val;
+		a[i] = val;
+		count++;
 	}
 	
-	public void deleteFromEnd(int[] a)
+	public void deleteValFromEnd(int []a)
 	{
 		if(a.length <= 0)
 			return;
 		count--;
 	}
 	
-	public void deleteValue(int[] a, int val)
+	public void deleteVal(int []a, int val)
 	{
-		int pos = 0;
+		int j = Integer.MIN_VALUE;
 		for(int i = 0; i < count; i++)
 		{
 			if(a[i] == val)
 			{
-				pos = i;
-				break;
+				j = i;
+				for(int k = j; k < count; k++)
+				{
+					a[k] = a[k+1];
+				}
+				count--;
 			}
 		}
 		
-		for(int i = pos; i < count-1; i++)
+		if(j == Integer.MIN_VALUE)
 		{
-			a[i] = a[i+1];
+			System.out.println(val + "not found in array");
 		}
-		count--;
 	}
-	
-	public void deletedFromPosition(int[]a, int pos)
-	{
-		for(int i = pos; i < count; i++)
-		{
-			a[i] = a[i+1];
-		}
-		count--;
-	}
-	
-	public static void main(String [] a)
-	{
-		int[] b = new int[5];
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int n = 10;
+		int[] a = new int[n];
+		
 		ArrayOperations ao = new ArrayOperations();
+		ao.insertAtEnd(a, 1);		
+		ao.insertAtEnd(a, 2);
+		ao.insertAtEnd(a, 3);
+		ao.insertAtEnd(a, 4);
+		ao.insertAtIndex(a, 3, 1);
+
+		ao.print(a);
+		ao.insertAtIndex(a, 5, 2);
+		ao.print(a);
+		ao.insertAtIndex(a, 8, 0);
+		ao.print(a);
+		ao.insertAtIndex(a, 48, 0);
+		ao.print(a);
+		ao.deleteValFromEnd(a);
+		ao.print(a);
 		
-		ao.add(b, 0);
-		ao.add(b, 1);
-		ao.add(b, 2);
-		ao.print(b);
-		
-//		ao.insertAtIndex(b, 4, 1);
-//		System.out.println(ao.count);
-//		ao.print(b);
-//		
-//		ao.insertAtIndex(b, 5, 0);
-//		System.out.println(ao.count);
-//		ao.insertAtIndex(b, 10, 2);
-//		System.out.println(ao.count);
-//
-//		ao.print(b);
-//		System.out.println(ao.count);
-		
-//		ao.deleteFromEnd(b);
-//		ao.print(b);
-//		
-//		ao.deleteValue(b, 1);
-//		ao.print(b);
-		
-		ao.deletedFromPosition(b, 0);
-		ao.print(b);
-		
+		ao.deleteVal(a, 3);
+		ao.print(a);
 	}
+	
+
 }
