@@ -25,7 +25,18 @@ All the calls to pop and peek are valid.
 
 --------------------------***------------------------------
 
-Solution 1 - 
+Solution 1 - Using 2 stacks to implement queues - instack and outstack
+Push - push every item that's coming - TC - O(1)
+Pop - if outstack is empty then push all items from instack to outstack till instack is empty. Then pop top of outstack
+      else pop top of outstack
+      TC - if outstack is empty - O(n)
+           else O(1)
+           avg TC - O(1)
+Peek - if outstack is empty then push all items from instack to outstack till instack is empty. Then get top of outstack
+      else get top of outstack
+      TC - if outstack is empty - O(n)
+           else O(1)
+           avg TC - O(1)
 
 class MyQueue {
     Stack<Integer> instack;
