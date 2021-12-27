@@ -72,3 +72,11 @@ class MinStack {
  * int param_3 = obj.top();
  * int param_4 = obj.getMin();
  */
+
+----------------------------------***------------------------------
+
+Time Complexity - 
+ - push() - O(1)
+ - pop() - O(1)
+ - top - O(1)
+ - min - O(1)
