@@ -1,0 +1,68 @@
+Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+
+ 
+
+Example 1:
+
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+Example 2:
+
+Input: x = 2.10000, n = 3
+Output: 9.26100
+Example 3:
+
+Input: x = 2.00000, n = -2
+Output: 0.25000
+Explanation: 2-2 = 1/22 = 1/4 = 0.25
+ 
+
+Constraints:
+
+-100.0 < x < 100.0
+-231 <= n <= 231-1
+-104 <= xn <= 104
+
+------------------------------------------
+
+Solution 1 - Tc - O(n) SC - O(1)
+
+class Solution {
+    public double myPow(double x, int n) {
+        double result = 1;
+        boolean isNegative = (n > 0) ? false: true;
+        n = Math.abs(n);
+        
+        for(int i = 1; i <= n; i++)
+        {
+            result = result * x;
+        }
+        result = isNegative ? 1/result : result;
+        return result;
+    }
+}
+
+----------------------------------------
+
+Solution 2 - TC - O(log n) SC - O(n)
+
+class Solution {
+    public double myPow(double x, int n) {
+        // base 
+        if(n == 0)
+            return 1;
+        
+        // logic
+        double result = myPow(x, n/2);
+        // check for even or odd
+        if(n % 2 == 0)
+        {
+            return result * result;
+        }
+        else
+        {
+            return n < 0 ? result * result * 1/x: result * result * x;
+        }
+        
+    }
+}
