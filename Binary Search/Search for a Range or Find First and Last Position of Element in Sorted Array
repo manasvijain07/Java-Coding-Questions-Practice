@@ -1,0 +1,89 @@
+Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+
+If target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
+
+ 
+
+Example 1:
+
+Input: nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
+Example 2:
+
+Input: nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
+Example 3:
+
+Input: nums = [], target = 0
+Output: [-1,-1]
+ 
+
+Constraints:
+
+0 <= nums.length <= 105
+-109 <= nums[i] <= 109
+nums is a non-decreasing array.
+-109 <= target <= 109
+
+---------------------------------------------
+
+Solution 1 - TC - O(n) SC - O(1)
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] result = new int[2];
+        result[0] = -1;
+        result[1] = -1;
+        
+        if(nums.length == 0 || nums == null)
+            return result;
+        
+        result[0] = getStart(nums, target, 0, nums.length - 1);
+        result[1] = getEnd(nums, target, 0, nums.length - 1);
+        
+        return result;
+    }
+    
+    public int getStart(int[] nums, int target, int start, int end)
+    {                                                                   
+        while(start <= end)
+        {
+            int mid = start + (end - start)/ 2;
+            
+            if((mid == 0  && nums[mid] == target)|| (nums[mid] == target && nums[mid - 1] != target))
+                return mid;
+            else if(nums[mid] >= target)
+            {
+                end = mid - 1;
+            }
+            else 
+            {
+                start = mid + 1;
+            }
+        }
+        return -1;
+    }
+    
+    public int getEnd(int[] nums, int target, int start, int end)
+    {
+        while(start <= end)
+        {
+            int mid = start + (end - start)/ 2;
+            
+            if((mid == nums.length - 1 && nums[mid] == target)|| (nums[mid] == target && nums[mid + 1] != target))
+                return mid;
+            else if(nums[mid] <= target)
+            {
+                start = mid + 1;
+            }
+            else 
+            {
+                end = mid - 1;
+            }
+        }
+        return -1;
+    }
+    
+}
