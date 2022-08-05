@@ -1,0 +1,69 @@
+TC - O(n)
+SC - O(n)
+
+
+/*package whatever //do not write package name here */
+
+import java.io.*;
+
+class GFG {
+    
+    static class Node 
+    {
+        int val;
+        Node left;
+        Node right;
+        
+        public Node(int val)
+        {
+            this.val = val;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    
+    public int getCountOfNodes(Node root)
+    {
+        if(root == null)
+            return 0;
+            
+        int left = getCountOfNodes(root.left);
+        int right = getCountOfNodes(root.right);
+        
+        return 1 + left + right;
+    }
+    
+    static Node root;
+	public static void main (String[] args) {
+// 		System.out.println("GfG!");
+        GFG g = new GFG();
+        root = new Node(6);
+        Node sec = new Node(3);
+        Node third = new Node(2);
+        Node forth = new Node(4);
+        Node fifth = new Node(5);
+        Node sixth = new Node(6);
+        Node seventh = new Node(7);
+        Node eight = new Node(8);
+        Node ninth = new Node(9);
+        Node tenth = new Node(10);
+        Node eleven = new Node(11);
+        
+        root.left = sec;
+        root.right = third;
+        
+        sec.left = forth;
+        sec.right = fifth;
+        
+        third.left = sixth;
+        third.right = seventh;
+        
+        forth.left = eight;
+        forth.right = ninth;
+        
+        fifth.left = tenth;
+        fifth.right = eleven;
+        
+        System.out.println("No of node - " + g.getCountOfNodes(root));
+	}
+}
