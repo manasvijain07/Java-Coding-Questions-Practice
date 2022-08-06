@@ -1,0 +1,195 @@
+Solution 1 - Queues using arrays - 
+TC - add - O(1) remove - O(n) peek - O(1)
+SC - O(n)
+
+Drawback - Since Arrays have fixed size, once it is full, we cant do anything. Also, the TC for remove is O(n)
+
+/*package whatever //do not write package name here */
+
+import java.io.*;
+
+class GFG {
+    
+    static class Queue
+    {
+        static int[] queue;
+        static int size;
+        static int rear;
+        
+        public Queue(int size)
+        {
+            this.size = size;
+            queue = new int[size];
+            rear = -1;
+        }
+        
+        public static boolean isEmpty()
+        {
+            return rear == -1;
+        }
+        
+        //enqueue
+        public static void add(int val)
+        {
+            if(rear == size - 1)
+            {
+                System.out.println("Queue is full. Can't insert");
+                return;
+            }
+            queue[++rear] = val;
+        }
+        
+        // dequeue
+        public static int delete()
+        {
+            if(isEmpty())
+            {
+                System.out.println("Cant delete. Queue is empty");
+                return -1;
+            }
+            
+            int front = queue[0];
+            
+            for(int i = 1; i < size; i++)
+            {
+                queue[i - 1] = queue[i];
+            }
+            rear--;
+            return front;
+        }
+        
+        // peek
+        public static int peek()
+        {
+            if(isEmpty())
+            {
+                System.out.println("Cant get peek. Array is Empty");
+                return -1;
+            }
+            
+            return queue[0];
+        }
+    }
+    
+	public static void main (String[] args) {
+		
+		Queue q = new Queue(5);
+		q.add(1);
+		q.add(2);
+		q.add(3);
+		q.add(4);
+		q.add(5);
+		
+		while(!q.isEmpty())
+		{
+		    
+		    System.out.println(q.delete());
+		}
+	}
+}
+
+---------------------------------------------
+
+Circular Queue - 
+
+When we were implementing queue using Arrays, if we delete elements from front, we have to move all elements by one position that takes O(n) TC. 
+To avoid that, we use a concept of circular queue in which we dont have to move all the elements but the front move one position. So TC of remove operation of Circular
+Queue takes O(1) TC
+
+TC - all operation O(1)
+SC - O(n)
+
+import java.io.*;
+
+class GFG {
+    
+    static class CircularQueue
+    {
+        static int[] queue;
+        static int size;
+        int front, rear;
+        
+        public CircularQueue(int size)
+        {
+            this.size = size;
+            queue = new int[size];
+            front = -1;
+            rear = -1;
+        }
+        
+        public boolean isEmpty()
+        {
+            return rear == -1 && front == -1;
+        }
+        
+        // enqueue
+        public void add(int val)
+        {
+            int pos = (rear + 1)% size;
+            if(pos == front)
+            {
+                System.out.println("Queue is full");
+                return;
+            }
+            
+            if(front == -1)
+            {
+                front = 0;
+            }
+            
+            queue[pos] = val;
+            rear = pos;
+        }
+        
+        // dequeue
+        public int remove()
+        {
+            if(isEmpty())
+            {
+                System.out.println("Queue is empty");
+                return -1;
+            }
+            
+            int val = queue[front];
+            
+            // single element
+            if(front == rear)
+            {
+                front = rear = -1;
+            }
+            else
+            {
+                front = (front + 1)% size;
+            }
+            return val;
+        }
+        
+        // peek
+        public int peek()
+        {
+            if(isEmpty())
+            {
+                System.out.println("Queue is empty");
+                return -1;
+            }
+            return queue[front];
+        }
+        
+    }
+    
+    public static void main (String[] args) {
+        /* code */
+        CircularQueue q = new CircularQueue(5);
+        q.add(1);
+		q.add(2);
+		q.add(3);
+		q.add(4);
+		q.add(5);
+		
+		while(!q.isEmpty())
+		{
+		    
+		    System.out.println(q.remove());
+		}
+    }
+}
