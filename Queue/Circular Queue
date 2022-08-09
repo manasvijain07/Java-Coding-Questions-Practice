@@ -1,0 +1,94 @@
+When we implement queue using arrays, it takes O(n) TC for remove. 
+Also, In a normal Queue, we can insert elements until queue becomes full. But once queue becomes full, we can not insert the next element even if 
+there is a space in front of queue.
+To avoid that we use Circular queue.
+
+A circular queue is the extended version of a regular queue where the last element is connected to the first element. Thus forming a circle-like structure.
+The operations are performed based on FIFO (First In First Out) principle
+
+Solution - 
+TC - O(1) all operations
+SC - O(1)
+
+class GFG {
+    static class Node{
+        int val;
+        Node next;
+        
+        public Node(int val)
+        {
+            this.val = val;
+            next = null;
+        }
+    }
+    
+    static class Queue
+    {
+        static Node head = null;
+        static Node tail = null;
+        
+        public static boolean isEmpty()
+        {
+            return head == null && tail == null;
+        }
+        
+        public void add(int val)
+        {
+            Node newNode = new Node(val);
+            
+            if(tail == null)
+            {
+                head = tail = newNode;
+            }
+            
+            tail.next = newNode;
+            tail = newNode;
+        }
+        
+        public int remove()
+        {
+            if(isEmpty())
+            {
+                System.out.println("Empty queue");
+                return -1;
+            }
+            
+            int front = head.val;
+            if(head == tail)
+            {
+                tail = null;
+            }
+            
+            head = head.next;
+            return front;
+        }
+        
+        public int peek()
+        {
+            if(isEmpty())
+            {
+                System.out.println("Empty queue");
+                return -1;
+            }
+            
+            return head.val;
+        }
+    }
+    
+    public static void main (String[] args) {
+		
+		Queue q = new Queue();
+		q.add(1);
+		q.add(2);
+		q.add(3);
+		q.add(4);
+		q.add(5);
+		
+		while(!q.isEmpty())
+		{
+		    
+		    System.out.println(q.remove());
+		}
+	}
+        
+}
