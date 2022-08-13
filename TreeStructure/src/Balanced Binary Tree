@@ -1,0 +1,132 @@
+Given a binary tree, determine if it is height-balanced.
+
+For this problem, a height-balanced binary tree is defined as:
+
+a binary tree in which the left and right subtrees of every node differ in height by no more than 1.
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: true
+Example 2:
+
+
+Input: root = [1,2,2,3,3,null,null,4,4]
+Output: false
+Example 3:
+
+Input: root = []
+Output: true
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 5000].
+-104 <= Node.val <= 104
+
+--------------------------------
+
+Solution 1 - Top down
+TC - O(n ^ 2)
+SC - O(n)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if(root == null)
+            return true;
+        int left = height(root.left);
+        int right = height(root.right);
+        return Math.abs(left - right) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+    
+    public int height(TreeNode root)
+    {
+        if(root == null)
+            return 0;
+
+        return 1 + Math.max(height(root.left), height(root.right));
+    }
+}
+
+-----------------------
+
+Solution 2 - Bottom up
+TC - O(n)
+SC - O(n)
+
+In approach 1, we perform redundant calculations when computing height. 
+In each call to height, we require that the subtree's heights also be computed. Therefore, when working top down we will compute the height of a subtree 
+once for every parent. 
+We can remove the redundancy by first recursing on the children of the current node and then using their computed height to determine 
+whether the current node is balanced.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    class TreeInfo
+    {
+        int height;
+        boolean isBalanced;
+        
+        public TreeInfo(int height, boolean isBalanced)
+        {
+            this.height = height;
+            this.isBalanced = isBalanced;
+        }
+    }
+    
+    public TreeInfo helper(TreeNode root)
+    {
+        if(root == null)
+            return new TreeInfo(0, true);
+        
+        TreeInfo left = helper(root.left);
+        if(!left.isBalanced)
+            return new TreeInfo(-1, false);
+        
+        TreeInfo right = helper(root.right);
+        if(!right.isBalanced)
+            return new TreeInfo(-1, false);
+        
+        if(Math.abs(left.height - right.height) < 2)
+            return new TreeInfo(Math.max(left.height, right.height) + 1, true);
+        
+        return new TreeInfo(-1, false);
+    }
+    
+    public boolean isBalanced(TreeNode root) {
+        return helper(root).isBalanced;
+    }
+    
+}
