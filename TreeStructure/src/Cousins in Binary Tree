@@ -1,0 +1,160 @@
+Given the root of a binary tree with unique values and the values of two different nodes of the tree x and y, return true if the nodes corresponding to the values x and y in the tree are cousins, or false otherwise.
+
+Two nodes of a binary tree are cousins if they have the same depth with different parents.
+
+Note that in a binary tree, the root node is at the depth 0, and children of each depth k node are at the depth k + 1.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,3,4], x = 4, y = 3
+Output: false
+Example 2:
+
+
+Input: root = [1,2,3,null,4,null,5], x = 5, y = 4
+Output: true
+Example 3:
+
+
+Input: root = [1,2,3,null,4], x = 2, y = 3
+Output: false
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [2, 100].
+1 <= Node.val <= 100
+Each node has a unique value.
+x != y
+x and y are exist in the tree.
+
+------------------------------------
+
+Solution 1 - DFS
+TC - O(n)
+SC - O(n)
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    TreeNode x_parent, y_parent;
+    int x_level = -1, y_level = -1;
+    
+    public boolean isCousins(TreeNode root, int x, int y) {
+        if(root == null)
+            return false;
+        
+        dfs(root, x, y, 0);
+        return x_level == y_level && x_parent != y_parent;
+    }
+    
+    public void dfs(TreeNode root, int x, int y, int level)
+    {
+       if(root == null)
+           return;
+        
+        if(root.left != null && root.left.val == x)
+        {
+            x_parent = root;
+            x_level = level;
+        }
+        else if(root.left != null && root.left.val == y)
+        {
+            y_parent = root;
+            y_level = level;
+        }
+        
+        if(root.right != null && root.right.val == x)
+        {
+            x_parent = root;
+            x_level = level;
+        }
+        else if(root.right != null && root.right.val == y)
+        {
+            y_parent = root;
+            y_level = level;
+        }
+        
+        if(x_parent != null && y_parent != null)
+            return;
+        dfs(root.left, x, y, level + 1);
+        if(x_parent != null && y_parent != null)
+            return;
+        dfs(root.right, x, y, level + 1);
+    }
+   
+}
+
+--------------------------------------
+
+Solution 2 - BFS
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isCousins(TreeNode root, int x, int y) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        
+        while(!queue.isEmpty())
+        {
+            int size = queue.size();
+            boolean x_parent = false, y_parent = false;
+            
+            for(int i = 0; i < size; i++)
+            {
+                TreeNode temp = queue.poll();
+                if((temp.left != null && temp.left.val == x) && (temp.right != null && temp.right.val == y))
+                    return false;
+                if((temp.left != null && temp.left.val == y) && (temp.right != null && temp.right.val == x))
+                    return false;
+                if(temp.val == x)
+                {
+                    x_parent= true;
+                }
+                if(temp.val == y)
+                {
+                    y_parent = true;
+                }
+                if(temp.left != null)
+                    queue.add(temp.left);
+                if(temp.right != null)
+                    queue.add(temp.right);
+            }
+            if(x_parent && y_parent)
+                return true;
+            if(x_parent || y_parent) 
+                return false;
+        }
+        return false;
+    }
+}
