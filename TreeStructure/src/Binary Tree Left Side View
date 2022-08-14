@@ -1,0 +1,193 @@
+Given the root of a binary tree, imagine yourself standing on the left side of it, return the values of the nodes you can see ordered from top to bottom.
+
+Solution 1 - BFS
+TC - O(n)
+SC - O(n)
+
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+
+class GFG {
+    
+    Node root;
+	
+	static class Node
+	{
+		int val;
+		Node left;
+		Node right;
+		
+		Node(int val)
+		{
+			this.val = val;
+			left = null;
+			right = null;
+		}
+	}
+	
+	public void createBinaryTree()
+	{
+		
+		Node first = new Node(1);
+		Node sec = new Node(2);
+		Node third = new Node(3);
+		Node fourth = new Node(4);
+		Node fifth = new Node(5);
+		
+		Node sixth = new Node(6);
+		Node seventh = new Node(7);
+		Node eigth = new Node(8);
+		Node ninth = new Node(9);
+		Node tenth = new Node(10);
+		
+		root = first;
+		first.left = sec;
+		first.right = third;
+		sec.left = fourth;
+		sec.right = fifth;
+		third.left = sixth;
+		fifth.left = seventh;
+		fifth.right = eigth;
+		sixth.left = ninth;
+		sixth.right = tenth;
+	}
+	
+	public List<Integer> leftSideView(Node root)
+	{
+	    List<Integer> result = new ArrayList<>();
+	    
+	    Queue<Node> queue = new LinkedList<>();
+	    queue.add(root);
+	    
+	    while(!queue.isEmpty())
+	    {
+	        int size = queue.size();
+	        for(int i = 0; i < size; i++)
+	        {
+	            Node temp = queue.poll();
+	            if(i == 0)
+	            result.add(temp.val);
+	            if(temp.left != null)
+	            {
+	                queue.add(temp.left);
+	            }
+	            if(temp.right != null)
+	            {
+	                queue.add(temp.right);
+	            }
+	        }
+	    }
+	    return result;
+	}
+	
+	public static void main(String[] a)
+	{
+		GFG t = new GFG();
+		t.createBinaryTree();
+		List<Integer> result = t.leftSideView(t.root);
+		for(int i : result)
+		{
+		    System.out.println(i + " ");
+		}
+	}
+    
+    
+    
+}
+
+---------------------------------------
+
+Solution 2 - DFS Recursive
+TC - O(n)
+SC - O(n)
+
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+
+class GFG {
+    
+    Node root;
+	
+	static class Node
+	{
+		int val;
+		Node left;
+		Node right;
+		
+		Node(int val)
+		{
+			this.val = val;
+			left = null;
+			right = null;
+		}
+	}
+	
+	public void createBinaryTree()
+	{
+		
+		Node first = new Node(1);
+		Node sec = new Node(2);
+		Node third = new Node(3);
+		Node fourth = new Node(4);
+		Node fifth = new Node(5);
+		
+		Node sixth = new Node(6);
+		Node seventh = new Node(7);
+		Node eigth = new Node(8);
+		Node ninth = new Node(9);
+		Node tenth = new Node(10);
+		
+		root = first;
+		first.left = sec;
+		first.right = third;
+		sec.left = fourth;
+		sec.right = fifth;
+		third.left = sixth;
+		fifth.left = seventh;
+		fifth.right = eigth;
+		sixth.left = ninth;
+		sixth.right = tenth;
+	}
+	
+	List<Integer> result;
+	public List<Integer> leftSideView(Node root)
+	{
+	    result = new ArrayList<>();
+	    
+	    if(root == null)
+	        return result;
+	        
+	    dfs(root, 0);
+	    return result;
+	}
+	
+	public void dfs(Node root, int level)
+	{
+	    if(root == null)
+	        return;
+	        
+	   if(level == result.size())
+	   {
+	       result.add(root.val);
+	   }
+	   
+	   dfs(root.left, level + 1);
+	   dfs(root.right, level + 1);
+	    
+	}
+	
+	public static void main(String[] a)
+	{
+		GFG t = new GFG();
+		t.createBinaryTree();
+		List<Integer> result1 = t.leftSideView(t.root);
+		for(int i : result1)
+		{
+		    System.out.println(i + " ");
+		}
+	}   
+}
