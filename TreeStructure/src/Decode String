@@ -1,0 +1,89 @@
+Given an encoded string, return its decoded string.
+
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
+
+The test cases are generated so that the length of the output will never exceed 105.
+
+ 
+
+Example 1:
+
+Input: s = "3[a]2[bc]"
+Output: "aaabcbc"
+Example 2:
+
+Input: s = "3[a2[c]]"
+Output: "accaccacc"
+Example 3:
+
+Input: s = "2[abc]3[cd]ef"
+Output: "abcabccdcdcdef"
+ 
+
+Constraints:
+
+1 <= s.length <= 30
+s consists of lowercase English letters, digits, and square brackets '[]'.
+s is guaranteed to be a valid input.
+All the integers in s are in the range [1, 300].
+
+-----------------------------
+
+Solution 1 - 
+Time Complexity: \mathcal{O}(\text{maxK} \cdot n)O(maxK⋅n), where \text{maxK}maxK is the maximum value of kk and nn is the length of a given string ss. We traverse a string of size nn and iterate kk times to decode each pattern of form \text{k[string]}k[string]. This gives us worst case time complexity as \mathcal{O}(\text{maxK} \cdot n)O(maxK⋅n).
+
+Space Complexity: \mathcal{O}(m+n)O(m+n), where mm is the number of letters(a-z) and nn is the number of digits(0-9) in string ss. In worst case, the maximum size of \text{stringStack}stringStack and \text{countStack}countStack could be mm and nn respectively.
+
+class Solution {
+    public String decodeString(String s) {
+        if(s == null || s.length() == 0)
+            return s;
+        
+        Stack<Integer> ds = new Stack<>();
+        Stack<String> ss = new Stack<>();
+        
+        String res = new String();
+        int i = 0;
+        
+        while(i < s.length())
+        {
+            char c = s.charAt(i);
+            if(Character.isDigit(c))
+            {
+                int num = 0;
+                while(Character.isDigit(s.charAt(i)))
+                {
+                    num = num * 10 + s.charAt(i) - '0';
+                    i++;
+                }
+                ds.push(num);
+            }
+            else if(c == '[')
+            {
+                ss.push(res);
+                res = "";
+                i++;
+            }
+            else if(c == ']')
+            {
+                StringBuilder sb = new StringBuilder(ss.pop());
+                int val = ds.pop();
+                for(int j = 0; j < val; j++)
+                {
+                    sb.append(res);
+                }
+                res = sb.toString();
+                i++;
+            }
+            else
+            {
+                res += c;
+                i++;
+            }
+        }
+        
+        return res;
+    }
+}
