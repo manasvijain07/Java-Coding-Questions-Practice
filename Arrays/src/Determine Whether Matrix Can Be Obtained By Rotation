@@ -1,0 +1,97 @@
+Given two n x n binary matrices mat and target, return true if it is possible to make mat equal to target by rotating mat in 90-degree increments, or false otherwise.
+
+ 
+
+Example 1:
+
+
+Input: mat = [[0,1],[1,0]], target = [[1,0],[0,1]]
+Output: true
+Explanation: We can rotate mat 90 degrees clockwise to make mat equal target.
+Example 2:
+
+
+Input: mat = [[0,1],[1,1]], target = [[1,0],[0,1]]
+Output: false
+Explanation: It is impossible to make mat equal to target by rotating mat.
+Example 3:
+
+
+Input: mat = [[0,0,0],[0,1,0],[1,1,1]], target = [[1,1,1],[0,1,0],[0,0,0]]
+Output: true
+Explanation: We can rotate mat 90 degrees clockwise two times to make mat equal target.
+ 
+
+Constraints:
+
+n == mat.length == target.length
+n == mat[i].length == target[i].length
+1 <= n <= 10
+mat[i][j] and target[i][j] are either 0 or 1.
+
+
+----------------------------------
+
+Solution 1 - 
+
+TC - O(m * n)
+SC = O(1)
+
+class Solution {
+    public boolean findRotation(int[][] mat, int[][] target) {
+        for(int k = 0; k < 4; k++)
+        {
+            rotate(mat, mat.length);
+        
+            if(matEqualTarget(mat, target))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean matEqualTarget(int[][] mat, int[][] target)
+    {
+        for(int i = 0; i < mat.length; i++)
+        {
+            for(int j = 0; j < mat.length; j++)
+            {
+                if(mat[i][j] != target[i][j])
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    public void rotate(int[][] matrix, int m) 
+    {
+        for(int i = 0; i < m; i++)
+            {
+                for(int j = i; j < m; j++)
+                {
+                   swap(matrix, i, j, j, i);
+                }
+            }
+
+        // swap
+        for(int i = 0; i < m; i++)
+        {
+            int left = 0, right = m - 1;
+            while(left < right)
+            {
+                swap(matrix, i, left, i, right);
+                left++;
+                right--;
+            }
+        }
+    }
+    
+    public void swap(int[][] matrix, int start1, int end1, int start2, int end2)
+    {
+        int temp = matrix[start1][end1];
+        matrix[start1][end1] = matrix[start2][end2];
+        matrix[start2][end2] = temp;
+    }
+}
+
