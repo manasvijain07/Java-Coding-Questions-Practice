@@ -1,0 +1,94 @@
+Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+
+The testcases will be generated such that the answer is unique.
+
+A substring is a contiguous sequence of characters within the string.
+
+ 
+
+Example 1:
+
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+Example 2:
+
+Input: s = "a", t = "a"
+Output: "a"
+Explanation: The entire string s is the minimum window.
+Example 3:
+
+Input: s = "a", t = "aa"
+Output: ""
+Explanation: Both 'a's from t must be included in the window.
+Since the largest window of s only has one 'a', return empty string.
+ 
+
+Constraints:
+
+m == s.length
+n == t.length
+1 <= m, n <= 105
+s and t consist of uppercase and lowercase English letters.
+
+
+-------------------------------------
+
+Solution 1 - 
+TC - O(m + n)  where m - s.length() && n - t.length()
+SC - O(n)
+
+class Solution {
+    public String minWindow(String s, String t) {
+        if(t.length() > s.length())
+            return "";
+        
+        int i = 0, j = 0, searched = 0, len = Integer.MAX_VALUE, left = -1, right = -1;
+        
+        HashMap<Character, Integer> map1 = new HashMap<>();
+        HashMap<Character, Integer> map2 = new HashMap<>();
+        
+        for(int k = 0; k < t.length(); k++)
+        {
+            map1.put(t.charAt(k), map1.getOrDefault(t.charAt(k), 0) + 1);
+        }
+        
+        while(j < s.length())
+        {
+            char c = s.charAt(j);
+            
+            if(map1.containsKey(c))
+            {
+                map2.put(c, map2.getOrDefault(c, 0) + 1);
+                if(map1.get(c).equals(map2.get(c)))
+                {
+                    searched++;
+                }
+                while(searched == map1.size())
+                {
+                    if(len > j - i + 1)
+                    {
+                        len = j - i + 1;
+                        left = i;
+                        right = j;
+                    }
+                    if(map2.containsKey(s.charAt(i)))
+                    {
+                        map2.put(s.charAt(i), map2.get(s.charAt(i)) - 1);
+                        
+                        if(map2.get(s.charAt(i)) < map1.get(s.charAt(i)))
+                        {
+                            searched--;
+                        }
+                    }
+                    i++;
+                }
+            }
+            j++;
+        }
+        if(left == -1)
+            return "";
+        return s.substring(left, right + 1);
+    }
+}
+
