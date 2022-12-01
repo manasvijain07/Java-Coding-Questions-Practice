@@ -1,0 +1,84 @@
+Given a list of n-1 integers and these integers are in the range of 1 to n. There are no duplicates in list. One of the integers is missing in the list. Write an efficient code to find the missing integer. 
+
+Examples: 
+
+Input : arr[] = [1, 2, 3, 4, 6, 7, 8]
+Output : 5
+
+Input : arr[] = [1, 2, 3, 4, 5, 6, 8, 9]
+Output : 7
+
+-----------------------------------------------------------
+
+-------------------------------------------------------------------------------
+
+Solution 1 - Using HashMap (time limit exceeded)
+// TC - O(n)
+// SC - O(n)
+
+int MissingNumber(int array[], int n) {
+        // Your Code Here
+        HashMap<Integer, Boolean> map = new HashMap<>();
+        
+        for(int i = 1; i <= n; i++)
+        {
+            map.put(i, false);
+        }
+        
+        for(int i: array)
+        {
+            map.put(i, true);
+        }
+        
+        for(int key: map.keySet())
+        {
+            if(!map.get(key))
+            {
+                return key;
+            }
+        }
+        return -1;
+    }
+
+--------------------------------------------------------------------------
+
+Solution 2 - Taking Sum -
+// TC - O(n)
+// SC - O(1)
+
+    int MissingNumber(int array[], int n) {
+        // Your Code Here
+        int tsum = n * (n + 1)/2, csum = 0;
+        for(int i : array)
+        {
+            csum += i;
+        }
+        return tsum - csum;
+    }
+
+------------------------------------------------------------------------
+
+Solution 3 - Binary Search - (works best for sorted array) --> Optimized method
+// TC - O(log n)
+// SC - O(1)
+
+    public int findMissingNo(int[] a)
+    {
+        
+        int low = 0, high = a.length - 1;
+        
+        while(high - low >= 2)
+        {
+            int mid = low + (high - low)/2;
+            
+            if((a[mid] - mid) == (a[low] - low))
+            {
+                low = mid;
+            }
+            else
+            {
+                high = mid;
+            }
+        }
+        return (a[low] + a[high])/2;
+    } 
