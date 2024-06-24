@@ -1,0 +1,35 @@
+Given an array of meeting time intervals consisting of start and end times[[s1,e1],[s2,e2],...](si< ei), determine if a person could attend all meetings.
+
+Example 1:
+Input:
+[[0,30],[5,10],[15,20]]
+Output: false
+
+Example 2:
+Input:
+ [[7,10],[2,4]]
+
+Output: true
+
+--------------------------------------------
+Sol 1 - sorting
+TC - O(n log n)
+SC - O(log n)
+
+    static boolean can_attend_all_meetings(ArrayList<ArrayList<Integer>> input) {
+        // Write your code here.
+        if(input.size() <= 1)
+	    {
+	        return 1;
+	    }
+	    
+	    Collections.sort(input, (a, b) -> a.get(0) - b.get(0));
+	    for(int i = 1; i < input.size(); i++)
+	    {
+	        if(input.get(i).get(0) < input.get(i-1).get(1))
+	        {
+	            return false;
+	        }
+	    }
+	    return true;
+    }
