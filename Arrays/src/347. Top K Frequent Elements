@@ -1,0 +1,106 @@
+347. Top K Frequent Elements
+
+Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,1,1,2,2,3], k = 2
+Output: [1,2]
+Example 2:
+
+Input: nums = [1], k = 1
+Output: [1]
+ 
+
+Constraints:
+
+1 <= nums.length <= 105
+-104 <= nums[i] <= 104
+k is in the range [1, the number of unique elements in the array].
+It is guaranteed that the answer is unique.
+ 
+
+Follow up: Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+
+-------------------------------------------
+
+Sol 1 - Brute force
+TC - O(n ^ 2)
+SC - O(n)
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] res = new int[k];
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            int count = 0;
+            if(!map.containsKey(nums[i]))
+            {
+                for(int j = 0; j < nums.length; j++)
+                {
+                    if(nums[i] == nums[j])
+                    {
+                        count++;
+                    }
+                }
+                map.put(nums[i], count);
+            }
+        }
+
+        PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>
+        ((a, b) -> a.getValue() - b.getValue());
+        for(Map.Entry<Integer, Integer> mapVal: map.entrySet())
+        {
+            pq.add(new Pair(mapVal.getKey(), mapVal.getValue()));
+            if(!pq.isEmpty() && pq.size() > k)
+            {
+                pq.poll();
+            }
+        }
+        int j = 0;
+        while(!pq.isEmpty())
+        {
+            Pair<Integer, Integer> val = pq.poll();
+             System.out.println(val.getKey() + " " + val.getValue());
+            res[j++] = val.getKey();
+        } 
+        return res;
+    }
+}
+------------------------------------------
+Solution 2- Optimized - 
+TC - O(n)
+SC - O(n)
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] res = new int[k];
+        for(int i = 0; i < nums.length; i++)
+        {
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+
+        PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>
+        ((a, b) -> a.getValue() - b.getValue());
+        for(Map.Entry<Integer, Integer> mapVal: map.entrySet())
+        {
+            pq.add(new Pair(mapVal.getKey(), mapVal.getValue()));
+            if(!pq.isEmpty() && pq.size() > k)
+            {
+                pq.poll();
+            }
+        }
+        int j = 0;
+        while(!pq.isEmpty())
+        {
+            Pair<Integer, Integer> val = pq.poll();
+            res[j++] = val.getKey();
+        } 
+        return res;
+    }
+}
