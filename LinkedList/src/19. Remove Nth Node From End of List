@@ -94,21 +94,21 @@ SC - O(n)
  */
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode first = head, sec= head;
+        int len = 0;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
 
+        ListNode first = dummy;
+        ListNode sec = dummy;
+        
         while(n > 0)
         {
-            if(first.next == null && n == 1)
-            {
-                head = head.next;
-                return head;
-            }
             first = first.next;
+            n--;
             if(first == null)
             {
-                return head;
+                return dummy.next;
             }
-            n--;
         }
 
         while(first.next != null)
@@ -116,9 +116,52 @@ class Solution {
             first = first.next;
             sec = sec.next;
         }
-
         if(sec.next != null)
+        {
             sec.next = sec.next.next;
-        return head;
+        }
+        return dummy.next;
+
+    }
+}/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        int len = 0;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+
+        ListNode first = dummy;
+        ListNode sec = dummy;
+        
+        while(n > 0)
+        {
+            first = first.next;
+            n--;
+            if(first == null)
+            {
+                return dummy.next;
+            }
+        }
+
+        while(first.next != null)
+        {
+            first = first.next;
+            sec = sec.next;
+        }
+        if(sec.next != null)
+        {
+            sec.next = sec.next.next;
+        }
+        return dummy.next;
+
     }
 }
