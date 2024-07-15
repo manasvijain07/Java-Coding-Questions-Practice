@@ -1,0 +1,124 @@
+19. Remove Nth Node From End of List
+
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+Example 2:
+
+Input: head = [1], n = 1
+Output: []
+Example 3:
+
+Input: head = [1,2], n = 1
+Output: [1]
+ 
+
+Constraints:
+
+The number of nodes in the list is sz.
+1 <= sz <= 30
+0 <= Node.val <= 100
+1 <= n <= sz
+ 
+
+Follow up: Could you do this in one pass?
+-------------------------------------
+Sol 1 - Two pass
+TC - O(n) 
+SC - O(n)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        int len = 0;
+        ListNode current = head;
+        
+        while(current != null)
+        {
+            current = current.next;
+            len++;
+        }
+        
+        if(n > len)
+        {
+            return head;
+        }
+        if(n == len)
+        {
+            head = head.next;
+            return head;
+        }
+        
+        int index = len - n - 1, ptr = 0;
+        current = head;
+        
+        while(ptr < index)
+        {
+            current = current.next;
+            ptr++;
+        }
+        
+        current.next = current.next.next;
+        return head;
+    }
+}
+------------------------------
+Sol 2 - One pass
+TC - O(n)
+SC - O(n)
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode first = head, sec= head;
+
+        while(n > 0)
+        {
+            if(first.next == null && n == 1)
+            {
+                head = head.next;
+                return head;
+            }
+            first = first.next;
+            if(first == null)
+            {
+                return head;
+            }
+            n--;
+        }
+
+        while(first.next != null)
+        {
+            first = first.next;
+            sec = sec.next;
+        }
+
+        if(sec.next != null)
+            sec.next = sec.next.next;
+        return head;
+    }
+}
