@@ -41,41 +41,29 @@ class Solution {
         {
             return head;
         }
-        int size = 0;
+        int size = 1;
         ListNode current = head;
 
-        while(current != null)
+        while(current.next != null)
         {
             current = current.next;
             size++;
         }
-
-        if(k > size)
-        {
-            k = k % size;
-        }
+        k = k % size;
         if(k == 0 || k == size)
         {
             return head;
         }
         int index = size - k;
+        current.next = head;
 
-        current = head;
-        for(int i = 1; i < index; i++)
+        for(int i = 0; i < index; i++)
         {
             current = current.next;
         }
-        System.out.println(current.val);
-        ListNode nextNode = current.next;
-        ListNode newHead = nextNode;
-        
-        while(nextNode != null && nextNode.next != null)
-        {
-            nextNode = nextNode.next;
-        }
-        if(nextNode != null)
-            nextNode.next = head;
+       
+        head = current.next;
         current.next = null;
-        return newHead;
+        return head;
     }
 }
